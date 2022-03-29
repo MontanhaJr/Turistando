@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.place_item.view.*
 
 class PlaceAdapter(private val places: MutableList<Place>) : RecyclerView.Adapter<PlaceAdapter.PlaceViewHolder>() {
@@ -24,8 +25,11 @@ class PlaceAdapter(private val places: MutableList<Place>) : RecyclerView.Adapte
     override fun getItemCount(): Int = places.size
 
     inner class PlaceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+
         fun bind(place: Place) {
             with(place) {
+                Picasso.get().load(imageUrl).into(itemView.img_place);
                 itemView.txt_name.text = name
                 itemView.txt_country.text = country
             }
