@@ -27,6 +27,7 @@ class PlaceAdapter(private val places: MutableList<Place>) : RecyclerView.Adapte
     inner class PlaceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
 
+
         fun bind(place: Place) {
             with(place) {
                 Picasso.get().load(imageUrl).into(itemView.img_place);

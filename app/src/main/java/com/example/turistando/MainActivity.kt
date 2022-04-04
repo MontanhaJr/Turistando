@@ -1,12 +1,17 @@
 package com.example.turistando
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.turistando.databinding.ActivityMainBinding
 import kotlinx.android.synthetic.main.activity_main.*
+import retrofit2.Call
+import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
+
+    val URL_PATH = "http://localhost:8080"
 
     lateinit var bind: ActivityMainBinding
 
@@ -24,6 +29,24 @@ class MainActivity : AppCompatActivity() {
         rv_main.adapter = PlaceAdapter(mutableListOf(lugar1, lugar2, lugar3))
         rv_main.layoutManager = LinearLayoutManager(this)
 
+        getPlaces()
+    }
 
+    private fun getPlaces() {
+        val retrofitClient = NetworkUtils.getRetrofitInstance(URL_PATH)
+        val endpoint = retrofitClient.create(Endpoint::class.java)
+
+        endpoint.getPlaces().enqueue(object : retrofit2.Callback<Place> {
+            override fun onResponse(call: Call<Place>, response: Response<Place>) {
+                var data = response.body().toString()
+                Toast.makeText(this@MainActivity, "$data", Toast.LENGTH_LONG).show()
+            }
+
+            override fun onFailure(call: Call<Place>, t: Throwable) {
+                Toast.makeText(this@MainActivity, "Falha ao acessar API", Toast.LENGTH_LONG).show()
+                println("FALHA ${t.message}")
+            }
+
+        })
     }
 }
